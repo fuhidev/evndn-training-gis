@@ -3,7 +3,18 @@ require([
   "esri/views/MapView",
   "esri/Basemap",
   "esri/layers/WebTileLayer",
-], function (Map, MapView, Basemap, WebTileLayer) {
+  "esri/geometry/Point",
+  "esri/Graphic",
+  "esri/symbols/SimpleMarkerSymbol",
+], function (
+  Map,
+  MapView,
+  Basemap,
+  WebTileLayer,
+  Point,
+  Graphic,
+  SimpleMarkerSymbol
+) {
   const map = new Map({
     basemap: new Basemap({
       baseLayers: [
@@ -20,4 +31,17 @@ require([
     center: [108.221472, 16.07031],
     scale: 50000,
   });
+
+  const graphicPoint = new Graphic({
+    // geometry: view.center,
+    geometry: new Point({
+      longitude: 108.221472,
+      latitude: 16.07031,
+    }),
+    symbol: new SimpleMarkerSymbol({
+      color: "yellow",
+    }),
+  });
+
+  view.graphics.add(graphicPoint);
 });
