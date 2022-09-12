@@ -6,6 +6,8 @@ require([
   "esri/geometry/Point",
   "esri/Graphic",
   "esri/symbols/SimpleMarkerSymbol",
+  "esri/geometry/Polyline",
+  "esri/symbols/SimpleLineSymbol",
 ], function (
   Map,
   MapView,
@@ -13,7 +15,9 @@ require([
   WebTileLayer,
   Point,
   Graphic,
-  SimpleMarkerSymbol
+  SimpleMarkerSymbol,
+  Polyline,
+  SimpleLineSymbol
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -42,6 +46,22 @@ require([
       color: "yellow",
     }),
   });
-
   view.graphics.add(graphicPoint);
+
+  const graphicLine = new Graphic({
+    geometry: new Polyline([
+      [108.22123, 16.070462],
+      [108.22185, 16.07042],
+      [108.22186, 16.06979],
+      [108.22151, 16.06975],
+      [108.22114, 16.06975],
+      [108.22123, 16.070462],
+    ]),
+    symbol: new SimpleLineSymbol({
+      color: "green",
+      width: 2,
+      style: "solid",
+    }),
+  });
+  view.graphics.add(graphicLine);
 });
