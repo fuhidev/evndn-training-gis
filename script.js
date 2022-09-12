@@ -60,7 +60,7 @@ require([
     symbol: new SimpleLineSymbol({
       color: "green",
       width: 2,
-      style: "solid",
+      style: "dash",
     }),
   });
   view.graphics.add(graphicLine);
