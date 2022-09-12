@@ -12,6 +12,7 @@ require([
   "esri/geometry/Polygon",
   "esri/symbols/SimpleFillSymbol",
   "esri/layers/FeatureLayer",
+  "esri/layers/MapImageLayer",
 ], function (
   Map,
   MapView,
@@ -25,7 +26,8 @@ require([
   SimpleLineSymbol,
   Polygon,
   SimpleFillSymbol,
-  FeatureLayer
+  FeatureLayer,
+  MapImageLayer
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -184,4 +186,11 @@ require([
     nenTramLayer,
     muongCapLayer,
   ]);
+
+  const banDoNen = new MapImageLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG/BanDoNen/MapServer",
+  });
+
+  map.add(banDoNen);
+  map.reorder(banDoNen, 0);
 });
