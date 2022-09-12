@@ -188,9 +188,27 @@ require([
   ]);
 
   const banDoNen = new MapImageLayer({
-    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG/BanDoNen/MapServer",
+    url: "https://biwase.info/server/rest/services/GISPCDANANG/BanDoNen_DaNang/MapServer",
   });
 
   map.add(banDoNen);
   map.reorder(banDoNen, 0);
+
+  banDoNen.when(() => {
+    const thuaDatCamLeLayer = banDoNen.findSublayerById(5);
+    const thuaDatHoaVangLayer = banDoNen.findSublayerById(7);
+    const thuaDatLienChieuLayer = banDoNen.findSublayerById(8);
+    const thuaDatNguHanhSonLayer = banDoNen.findSublayerById(9);
+    const thuaDatSonTraLayer = banDoNen.findSublayerById(10);
+    const thuaDatThanhKheLayer = banDoNen.findSublayerById(11);
+    thuaDatCamLeLayer.visible =
+      thuaDatHoaVangLayer.visible =
+      thuaDatLienChieuLayer.visible =
+      thuaDatNguHanhSonLayer.visible =
+      thuaDatSonTraLayer.visible =
+      thuaDatThanhKheLayer.visible =
+        false;
+    const hanhChinhHuyenLayer = banDoNen.findSublayerById(16);
+    hanhChinhHuyenLayer.definitionExpression = `TenQuanHuyen=N'Quận Hải Châu'`;
+  });
 });
