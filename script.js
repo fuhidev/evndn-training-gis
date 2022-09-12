@@ -37,7 +37,7 @@ require([
     map: map,
     container: "viewDiv",
     center: [108.221472, 16.07031],
-    scale: 50000,
+    scale: 5000,
   });
 
   const graphicPoint = new Graphic({
@@ -77,13 +77,22 @@ require([
       [108.2214, 16.07008],
       [108.2213, 16.07009],
     ]),
-    symbol: new SimpleFillSymbol({
-      color: "#9b59b6",
-      outline: new SimpleLineSymbol({
-        color: "#e74c3c",
-        width: 2,
-      }),
-    }),
+    // symbol: new SimpleFillSymbol({
+    //   color: "#9b59b6",
+    //   outline: new SimpleLineSymbol({
+    //     color: "#e74c3c",
+    //     width: 2,
+    //   }),
+    // }),
+    symbol: {
+      type: "picture-fill", // autocasts as new PictureFillSymbol()
+      url: "./Icon-EVN.png",
+      width: "50px",
+      height: "50px",
+      outline: {
+        style: "solid",
+      },
+    },
   });
   view.graphics.add(graphicPolygon);
 });
