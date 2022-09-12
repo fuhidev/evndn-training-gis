@@ -8,6 +8,8 @@ require([
   "esri/symbols/SimpleMarkerSymbol",
   "esri/geometry/Polyline",
   "esri/symbols/SimpleLineSymbol",
+  "esri/geometry/Polygon",
+  "esri/symbols/SimpleFillSymbol",
 ], function (
   Map,
   MapView,
@@ -17,7 +19,9 @@ require([
   Graphic,
   SimpleMarkerSymbol,
   Polyline,
-  SimpleLineSymbol
+  SimpleLineSymbol,
+  Polygon,
+  SimpleFillSymbol
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -64,4 +68,22 @@ require([
     }),
   });
   view.graphics.add(graphicLine);
+
+  const graphicPolygon = new Graphic({
+    geometry: new Polygon([
+      [108.2213, 16.07009],
+      [108.22129, 16.06993],
+      [108.2214, 16.06992],
+      [108.2214, 16.07008],
+      [108.2213, 16.07009],
+    ]),
+    symbol: new SimpleFillSymbol({
+      color: "#9b59b6",
+      outline: new SimpleLineSymbol({
+        color: "#e74c3c",
+        width: 2,
+      }),
+    }),
+  });
+  view.graphics.add(graphicPolygon);
 });
