@@ -10,6 +10,7 @@ require([
   "esri/symbols/SimpleLineSymbol",
   "esri/geometry/Polygon",
   "esri/symbols/SimpleFillSymbol",
+  "esri/layers/FeatureLayer",
 ], function (
   Map,
   MapView,
@@ -21,7 +22,8 @@ require([
   Polyline,
   SimpleLineSymbol,
   Polygon,
-  SimpleFillSymbol
+  SimpleFillSymbol,
+  FeatureLayer
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -95,4 +97,76 @@ require([
     },
   });
   view.graphics.add(graphicPolygon);
+
+  const thietBiDongCatLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/0",
+    title: "Thiết bị đóng cắt",
+    visible: false,
+    minScale: 20000,
+  });
+  const thietBiDoDemLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/1",
+    title: "Thiết bị đo đếm",
+    visible: false,
+    minScale: 20000,
+  });
+  const tuBuLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/2",
+    title: "Tụ bù",
+    visible: false,
+    minScale: 20000,
+  });
+  const tramBienApLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/3",
+    title: "Trạm biến áp",
+    visible: false,
+    minScale: 20000,
+  });
+  const diemRanhGioiLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/4",
+    title: "Điểm ranh giới",
+    visible: false,
+    minScale: 20000,
+  });
+  const dauNoiLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/5",
+    title: "Đấu nối",
+    visible: false,
+    minScale: 20000,
+  });
+  const cotDienLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/6",
+    title: "Cột điện",
+    visible: false,
+    minScale: 20000,
+  });
+  const duongDayLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/7",
+    title: "Đường dây",
+  });
+  const nenTramLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/8",
+    title: "Nền trạm",
+    visible: false,
+    minScale: 20000,
+  });
+  const muongCapLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/9",
+    title: "Mương cáp",
+    visible: false,
+    minScale: 20000,
+  });
+
+  map.addMany([
+    thietBiDongCatLayer,
+    thietBiDoDemLayer,
+    tuBuLayer,
+    tramBienApLayer,
+    diemRanhGioiLayer,
+    dauNoiLayer,
+    cotDienLayer,
+    duongDayLayer,
+    nenTramLayer,
+    muongCapLayer,
+  ]);
 });
