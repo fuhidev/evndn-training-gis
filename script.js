@@ -189,6 +189,7 @@ require([
   });
 
   map.addMany([
+    duongDayLayer,
     thietBiDongCatLayer,
     thietBiDoDemLayer,
     tuBuLayer,
@@ -196,7 +197,6 @@ require([
     diemRanhGioiLayer,
     dauNoiLayer,
     cotDienLayer,
-    duongDayLayer,
     nenTramLayer,
     muongCapLayer,
   ]);
@@ -206,7 +206,7 @@ require([
   });
 
   map.add(banDoNen);
-  map.reorder(banDoNen, 1);
+  map.reorder(banDoNen, 0);
 
   banDoNen.when(() => {
     const thuaDatCamLeLayer = banDoNen.findSublayerById(5);
@@ -273,4 +273,31 @@ require([
     }),
     "top-right"
   );
+
+  duongDayLayer.when(() => {
+    const fieldInfos = [];
+    const IGNORE_FIELDS = ["OBJECTID", "NgayKhoiTao"];
+    for (const field of duongDayLayer.fields) {
+      if (!IGNORE_FIELDS.includes(field.name)) {
+        const fieldInfo = {
+          label: field.alias,
+          fieldName: field.name,
+        };
+        fieldInfos.push(fieldInfo);
+      }
+    }
+    // const fieldInfos = duongDayLayer.fields.map((field) => ({
+    //   label: field.alias,
+    //   fieldName: field.name,
+    // }));
+    duongDayLayer.popupTemplate = {
+      title: duongDayLayer.title + " {TenDZ}",
+      content: [
+        {
+          type: "fields",
+          fieldInfos,
+        },
+      ],
+    };
+  });
 });
