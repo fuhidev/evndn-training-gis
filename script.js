@@ -310,6 +310,13 @@ require([
             type: "fields",
             fieldInfos,
           },
+          {
+            type: "custom",
+            creator: (graphic) => {
+              const ID = graphic.attributes.ID;
+              return '<img src="https://9mobi.vn/cf/images/2015/03/nkk/hinh-anh-dep-1.jpg"/>';
+            },
+          },
         ],
       };
     });
