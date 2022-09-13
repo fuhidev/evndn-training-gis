@@ -13,6 +13,7 @@ require([
   "esri/symbols/SimpleFillSymbol",
   "esri/layers/FeatureLayer",
   "esri/layers/MapImageLayer",
+  "esri/widgets/Locate",
 ], function (
   Map,
   MapView,
@@ -27,7 +28,8 @@ require([
   Polygon,
   SimpleFillSymbol,
   FeatureLayer,
-  MapImageLayer
+  MapImageLayer,
+  Locate
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -232,4 +234,7 @@ require([
       }
     });
   });
+
+  var locateBtn = new Locate({ view: view });
+  view.ui.add(locateBtn, "top-left");
 });
