@@ -115,13 +115,15 @@ require([
   });
   view.graphics.add(graphicPolygon);
 
-  view.watch("scale", (val) => console.log(val));
-
   const thietBiDongCatLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/0",
     title: "Thiết bị đóng cắt",
     visible: false,
     minScale: 20000,
+  });
+  const duongDayLayer = new FeatureLayer({
+    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/7",
+    title: "Đường dây",
   });
   const thietBiDoDemLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/1",
@@ -156,13 +158,9 @@ require([
   const cotDienLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/6",
     title: "Cột điện",
-    visible: false,
-    minScale: 20000,
+    visible: true,
   });
-  const duongDayLayer = new FeatureLayer({
-    url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/7",
-    title: "Đường dây",
-  });
+
   const nenTramLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/8",
     title: "Nền trạm",
@@ -177,6 +175,7 @@ require([
   });
 
   map.addMany([
+    duongDayLayer,
     thietBiDongCatLayer,
     thietBiDoDemLayer,
     tuBuLayer,
@@ -184,7 +183,6 @@ require([
     diemRanhGioiLayer,
     dauNoiLayer,
     cotDienLayer,
-    duongDayLayer,
     nenTramLayer,
     muongCapLayer,
   ]);
@@ -194,7 +192,7 @@ require([
   });
 
   map.add(banDoNen);
-  map.reorder(banDoNen, 1);
+  map.reorder(banDoNen, 0);
 
   banDoNen.when(() => {
     const thuaDatCamLeLayer = banDoNen.findSublayerById(5);
@@ -226,6 +224,23 @@ require([
       if (response.results.length) {
         for (let i = 0; i < response.results.length; i++) {
           const feature = response.results[i];
+          if (feature.layer === duongDayLayer) {
+            cotDienLayer
+              .queryFeatures({
+                geometry: feature.graphic.geometry,
+                distance: 5,
+                units: "meters",
+                outFields: ["OBJECTID"],
+                returnGeometry: true,
+                outSpatialReference: view.spatialReference,
+              })
+              .then((response) => {
+                view.whenLayerView(cotDienLayer).then((layerView) => {
+                  const handle = layerView.highlight(response.features);
+                  handles.push(handle);
+                });
+              });
+          }
           view.whenLayerView(feature.layer).then((layerView) => {
             const handle = layerView.highlight(feature.graphic);
             handles.push(handle);
