@@ -274,30 +274,44 @@ require([
     "top-right"
   );
 
-  duongDayLayer.when(() => {
-    const fieldInfos = [];
-    const IGNORE_FIELDS = ["OBJECTID", "NgayKhoiTao"];
-    for (const field of duongDayLayer.fields) {
-      if (!IGNORE_FIELDS.includes(field.name)) {
-        const fieldInfo = {
-          label: field.alias,
-          fieldName: field.name,
-        };
-        fieldInfos.push(fieldInfo);
+  const IGNORE_FIELDS = ["OBJECTID", "NgayKhoiTao"];
+  [
+    duongDayLayer,
+    thietBiDongCatLayer,
+    thietBiDoDemLayer,
+    tuBuLayer,
+    tramBienApLayer,
+    diemRanhGioiLayer,
+    dauNoiLayer,
+    cotDienLayer,
+    nenTramLayer,
+    muongCapLayer,
+  ].forEach((layer) => {
+    layer.when(() => {
+      const fieldInfos = [];
+      for (const field of layer.fields) {
+        if (!IGNORE_FIELDS.includes(field.name)) {
+          const fieldInfo = {
+            label: field.alias,
+            fieldName: field.name,
+          };
+          fieldInfos.push(fieldInfo);
+        }
       }
-    }
-    // const fieldInfos = duongDayLayer.fields.map((field) => ({
-    //   label: field.alias,
-    //   fieldName: field.name,
-    // }));
-    duongDayLayer.popupTemplate = {
-      title: duongDayLayer.title + " {TenDZ}",
-      content: [
-        {
-          type: "fields",
-          fieldInfos,
-        },
-      ],
-    };
+      let title = layer.title;
+      if (layer === duongDayLayer) {
+        title += " {TenDZ}";
+      }
+
+      layer.popupTemplate = {
+        title,
+        content: [
+          {
+            type: "fields",
+            fieldInfos,
+          },
+        ],
+      };
+    });
   });
 });
