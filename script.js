@@ -348,6 +348,21 @@ require([
         "text-white",
         "font-bold"
       );
+      btnSubmit.onclick = () => {
+        const values = featureForm.getValues();
+        const layer = selectedFeature.layer;
+        layer
+          .applyEdits({
+            updateFeatures: [
+              {
+                attributes: values,
+              },
+            ],
+          })
+          .then(() => {
+            alert("Cập nhật thành công");
+          });
+      };
       featureForm.when(() => {
         popupContent.appendChild(btnSubmit);
       });
