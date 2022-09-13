@@ -334,10 +334,22 @@ require([
       const poupClass = ".esri-popup__content";
       const popupContent = view.popup.container.querySelector(poupClass);
       popupContent.innerHTML = "";
-      new FeatureForm({
+      const featureForm = new FeatureForm({
         view,
         container: popupContent,
         feature: selectedFeature,
+      });
+      const btnSubmit = document.createElement("button");
+      btnSubmit.innerText = "Cập nhật";
+      btnSubmit.classList.add(
+        "px-4",
+        "py-2",
+        "bg-violet-600",
+        "text-white",
+        "font-bold"
+      );
+      featureForm.when(() => {
+        popupContent.appendChild(btnSubmit);
       });
     }
   });
