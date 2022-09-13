@@ -20,6 +20,7 @@ require([
   "esri/widgets/Legend",
   "esri/widgets/Expand",
   "esri/widgets/Print",
+  "esri/widgets/FeatureForm",
 ], function (
   Map,
   MapView,
@@ -41,7 +42,8 @@ require([
   Home,
   Legend,
   Expand,
-  Print
+  Print,
+  FeatureForm
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -318,7 +320,25 @@ require([
             },
           },
         ],
+        actions: [
+          { id: "edit", title: "Chỉnh sửa", className: "esri-icon-edit" },
+        ],
       };
     });
+  });
+
+  view.popup.on("trigger-action", (event) => {
+    const actionId = event.action.id;
+    if (actionId === "edit") {
+      const selectedFeature = view.popup.selectedFeature;
+      const poupClass = ".esri-popup__content";
+      const popupContent = view.popup.container.querySelector(poupClass);
+      popupContent.innerHTML = "";
+      new FeatureForm({
+        view,
+        container: popupContent,
+        feature: selectedFeature,
+      });
+    }
   });
 });
