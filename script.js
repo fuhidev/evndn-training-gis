@@ -18,6 +18,8 @@ require([
   "esri/widgets/BasemapToggle",
   "esri/widgets/Home",
   "esri/widgets/Legend",
+  "esri/widgets/Expand",
+  "esri/widgets/Print",
 ], function (
   Map,
   MapView,
@@ -37,7 +39,9 @@ require([
   BasemapGallery,
   BasemapToggle,
   Home,
-  Legend
+  Legend,
+  Expand,
+  Print
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -245,8 +249,28 @@ require([
 
   var locateBtn = new Locate({ view: view });
   view.ui.add(locateBtn, "top-left");
-  view.ui.add(new BasemapGallery({ view }), "bottom-left");
+  view.ui.add(
+    new Expand({
+      content: new BasemapGallery({ view }),
+    }),
+    "bottom-left"
+  );
   view.ui.add(new BasemapToggle({ view }), "bottom-left");
   view.ui.add(new Home({ view }), "top-left");
-  view.ui.add(new Legend({ view }), "bottom-right");
+  view.ui.add(
+    new Expand({
+      content: new Legend({ view }),
+    }),
+    "bottom-right"
+  );
+  view.ui.add(
+    new Expand({
+      content: new Print({
+        view,
+        printServiceUrl:
+          "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+      }),
+    }),
+    "top-right"
+  );
 });
