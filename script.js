@@ -192,7 +192,7 @@ require([
   });
 
   map.add(banDoNen);
-  map.reorder(banDoNen, 0);
+  map.reorder(banDoNen, 1);
 
   banDoNen.when(() => {
     const thuaDatCamLeLayer = banDoNen.findSublayerById(5);
@@ -210,5 +210,8 @@ require([
         false;
     const hanhChinhHuyenLayer = banDoNen.findSublayerById(16);
     hanhChinhHuyenLayer.definitionExpression = `TenQuanHuyen=N'Quận Hải Châu'`;
+
+    const timDuongLayer = banDonen.findSublayerById(13);
+    timDuongLayer.definitionExpression = `doRong > 2`;
   });
 });
