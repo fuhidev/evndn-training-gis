@@ -214,18 +214,21 @@ require([
     const timDuongLayer = banDoNen.findSublayerById(13);
     timDuongLayer.definitionExpression = `doRong > 2`;
   });
-  let handle;
+  let handles = [];
   view.on("click", (event) => {
-    if (handle) {
-      handle.remove();
-      delete handle;
+    if (handles.length) {
+      handles.forEach((handle) => handle.remove());
+      handles = [];
     }
     view.hitTest(event.screenPoint).then((response) => {
       if (response.results.length) {
-        const firstFeature = response.results[0];
-        view.whenLayerView(firstFeature.layer).then((layerView) => {
-          handle = layerView.highlight(firstFeature.graphic);
-        });
+        for (let i = 0; i < response.results.length; i++) {
+          const feature = response.results[i];
+          view.whenLayerView(feature.layer).then((layerView) => {
+            const handle = layerView.highlight(feature.graphic);
+            handles.push(handle);
+          });
+        }
       }
     });
   });
