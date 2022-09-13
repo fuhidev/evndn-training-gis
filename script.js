@@ -150,7 +150,7 @@ require([
   const tramBienApLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/3",
     title: "Trạm biến áp",
-    visible: false,
+    visible: true,
     minScale: 20000,
   });
   const diemRanhGioiLayer = new FeatureLayer({
@@ -168,12 +168,42 @@ require([
   const cotDienLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/6",
     title: "Cột điện",
-    visible: false,
+    visible: true,
     minScale: 20000,
+    popupTemplate: {
+      title: "Cột điện",
+      content: [
+        {
+          type: "fields",
+          fieldInfos: [
+            { fieldName: "ViTriCotTrungThe", label: "Vị trí cột trung thế" },
+            { fieldName: "X", label: "Kinh độ (VN2000)" },
+            { fieldName: "Y", label: "Vĩ độ (VN2000)" },
+          ],
+        },
+      ],
+    },
   });
   const duongDayLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/7",
     title: "Đường dây",
+    popupTemplate: {
+      title: "Đường dây {TenDZ}",
+      content: [
+        {
+          type: "media",
+          mediaInfos: [
+            {
+              title: "Biểu đồ",
+              type: "column-chart",
+              value: {
+                fields: ["PhanLoai"],
+              },
+            },
+          ],
+        },
+      ],
+    },
   });
   const nenTramLayer = new FeatureLayer({
     url: "https://dnpcgisportal.cpc.vn/portal/rest/services/GISPCDANANG_DEMO/LuoiDien_HaiChau_TT_Demo/FeatureServer/8",
@@ -189,6 +219,7 @@ require([
   });
 
   map.addMany([
+    duongDayLayer,
     thietBiDongCatLayer,
     thietBiDoDemLayer,
     tuBuLayer,
@@ -196,7 +227,6 @@ require([
     diemRanhGioiLayer,
     dauNoiLayer,
     cotDienLayer,
-    duongDayLayer,
     nenTramLayer,
     muongCapLayer,
   ]);
@@ -206,7 +236,7 @@ require([
   });
 
   map.add(banDoNen);
-  map.reorder(banDoNen, 1);
+  map.reorder(banDoNen, 0);
 
   banDoNen.when(() => {
     const thuaDatCamLeLayer = banDoNen.findSublayerById(5);
@@ -227,24 +257,6 @@ require([
 
     const timDuongLayer = banDoNen.findSublayerById(13);
     timDuongLayer.definitionExpression = `doRong > 2`;
-  });
-  let handles = [];
-  view.on("click", (event) => {
-    if (handles.length) {
-      handles.forEach((handle) => handle.remove());
-      handles = [];
-    }
-    view.hitTest(event.screenPoint).then((response) => {
-      if (response.results.length) {
-        for (let i = 0; i < response.results.length; i++) {
-          const feature = response.results[i];
-          view.whenLayerView(feature.layer).then((layerView) => {
-            const handle = layerView.highlight(feature.graphic);
-            handles.push(handle);
-          });
-        }
-      }
-    });
   });
 
   var locateBtn = new Locate({ view: view });
