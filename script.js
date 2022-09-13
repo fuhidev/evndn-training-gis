@@ -14,6 +14,10 @@ require([
   "esri/layers/FeatureLayer",
   "esri/layers/MapImageLayer",
   "esri/widgets/Locate",
+  "esri/widgets/BasemapGallery",
+  "esri/widgets/BasemapToggle",
+  "esri/widgets/Home",
+  "esri/widgets/Legend",
 ], function (
   Map,
   MapView,
@@ -29,7 +33,11 @@ require([
   SimpleFillSymbol,
   FeatureLayer,
   MapImageLayer,
-  Locate
+  Locate,
+  BasemapGallery,
+  BasemapToggle,
+  Home,
+  Legend
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -237,4 +245,8 @@ require([
 
   var locateBtn = new Locate({ view: view });
   view.ui.add(locateBtn, "top-left");
+  view.ui.add(new BasemapGallery({ view }), "bottom-left");
+  view.ui.add(new BasemapToggle({ view }), "bottom-left");
+  view.ui.add(new Home({ view }), "top-left");
+  view.ui.add(new Legend({ view }), "bottom-right");
 });
