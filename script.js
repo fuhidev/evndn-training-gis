@@ -211,7 +211,22 @@ require([
     const hanhChinhHuyenLayer = banDoNen.findSublayerById(16);
     hanhChinhHuyenLayer.definitionExpression = `TenQuanHuyen=N'Quận Hải Châu'`;
 
-    const timDuongLayer = banDonen.findSublayerById(13);
+    const timDuongLayer = banDoNen.findSublayerById(13);
     timDuongLayer.definitionExpression = `doRong > 2`;
+  });
+  let handle;
+  view.on("click", (event) => {
+    if (handle) {
+      handle.remove();
+      delete handle;
+    }
+    view.hitTest(event.screenPoint).then((response) => {
+      if (response.results.length) {
+        const firstFeature = response.results[0];
+        view.whenLayerView(firstFeature.layer).then((layerView) => {
+          handle = layerView.highlight(firstFeature.graphic);
+        });
+      }
+    });
   });
 });
