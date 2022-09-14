@@ -49,22 +49,22 @@
           ></div>
           <div
             id="searchingCoordinateContainer"
-            class="bg-white px-4 py-2 rounded shadow"
+            class="bg-white px-4 py-2 rounded shadow flex flex-col gap-2"
           >
-            <select id="selectSR">
+            <select id="selectSR" class="py-2 px-4">
               <option value="vn2000">VN2000</option>
               <option value="wgs84">WGS84</option>
             </select>
-            <div>
-              <label>X</label>
-              <input id="inputX" />
+            <div class="flex gap-2">
+              <label class="text-slate-600">X</label>
+              <input id="inputX" class="outline-0 border-b" />
             </div>
-            <div>
-              <label>Y</label>
-              <input id="inputY" />
+            <div class="flex gap-2">
+              <label class="text-slate-600">Y</label>
+              <input id="inputY" class="outline-0 border-b" />
             </div>
             <button
-              class="p-2 bg-violet-600 text-white w-full rounded"
+              class="px-2 py-1 bg-violet-600 text-white w-full rounded"
               id="btnSubmitSR"
             >
               Xem
