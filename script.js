@@ -23,6 +23,7 @@ require([
   "esri/widgets/FeatureForm",
   "esri/rest/geometryService",
   "esri/geometry/SpatialReference",
+  "esri/core/promiseUtils",
 ], function (
   Map,
   MapView,
@@ -47,7 +48,8 @@ require([
   Print,
   FeatureForm,
   geometryService,
-  SpatialReference
+  SpatialReference,
+  promiseUtils
 ) {
   const map = new Map({
     basemap: new Basemap({
@@ -373,26 +375,32 @@ require([
     }
   });
   const coordinateContainer = $("#coordinateContainer");
-  view.ui.add(coordinateContainer[0], "bottom-right");
-  view.on("pointer-move", (event) => {
-    const { x, y } = event;
-    const mapPoint = view.toMap({ x, y });
-    geometryService
-      .project(
-        "https://dnpcgisportal.cpc.vn/portal/rest/services/Utilities/Geometry/GeometryServer",
-        {
-          geometries: [mapPoint],
-          outSpatialReference: new SpatialReference({
-            wkt: 'PROJCS["DANANG_VN2000",GEOGCS["GCS_VN_2000",DAT UM["D_Vietnam_2000",SPHEROID["WGS_1984",6378137.0,298.257223 563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]], PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",50 0000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Mer idian",107.75],PARAMETER["Scale_Factor",0.9999],PARAMETER["Lati tude_Of_Origin",0.0],UNIT["Meter",1.0]]',
-          }),
-        }
-      )
-      .then((response) => {
-        if (response.length) {
-          const vn2000Point = response[0];
-          const text = `${vn2000Point.x},${vn2000Point.y}`;
-          coordinateContainer.text(text);
-        }
-      });
+  duongDayLayer.when(() => {
+    view.ui.add(coordinateContainer[0], "bottom-right");
+    const toVn2000 = promiseUtils.debounce((wgs8Point) => {
+      return geometryService
+        .project(
+          "https://dnpcgisportal.cpc.vn/portal/rest/services/Utilities/Geometry/GeometryServer",
+          {
+            geometries: [wgs8Point],
+            outSpatialReference: duongDayLayer.spatialReference,
+            // outSpatialReference: new SpatialReference({
+            //   wkt: 'PROJCS["DANANG_VN2000",GEOGCS["GCS_VN_2000",DAT UM["D_Vietnam_2000",SPHEROID["WGS_1984",6378137.0,298.257223 563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]], PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",50 0000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Mer idian",107.75],PARAMETER["Scale_Factor",0.9999],PARAMETER["Lati tude_Of_Origin",0.0],UNIT["Meter",1.0]]',
+            // }),
+          }
+        )
+        .then((response) => {
+          if (response.length) {
+            const vn2000Point = response[0];
+            const text = `${vn2000Point.x},${vn2000Point.y}`;
+            coordinateContainer.text(text);
+          }
+        });
+    });
+    view.on("pointer-move", (event) => {
+      const { x, y } = event;
+      const mapPoint = view.toMap({ x, y });
+      toVn2000(mapPoint);
+    });
   });
 });
