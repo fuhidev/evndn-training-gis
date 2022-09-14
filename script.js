@@ -45,14 +45,15 @@ require([
   Print,
   FeatureForm
 ) {
+  const basemap = new Basemap({
+    baseLayers: [
+      new WebTileLayer({
+        urlTemplate: "http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}",
+      }),
+    ],
+  });
   const map = new Map({
-    basemap: new Basemap({
-      baseLayers: [
-        new WebTileLayer({
-          urlTemplate: "http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}",
-        }),
-      ],
-    }),
+    basemap: basemap,
   });
 
   const view = new MapView({
@@ -190,6 +191,9 @@ require([
     minScale: 20000,
   });
 
+  // view.watch('map.basemap.title')
+  // map.watch('basemap.title')
+  // basemap.watch('title')
   map.addMany([
     duongDayLayer,
     thietBiDongCatLayer,
@@ -206,6 +210,16 @@ require([
   const banDoNen = new MapImageLayer({
     url: "https://biwase.info/server/rest/services/GISPCDANANG/BanDoNen_DaNang/MapServer",
   });
+
+  banDoNen.watch("visible, opacity", (newVal, oldVal, property, target) => {
+    // alert(`thuoc tinh  ${property} thay doi gia tri sang: ${newVal}`);
+  });
+
+  setTimeout(() => {
+    banDoNen.opacity = 0.7;
+  }, 5000);
+  // banDoNen.watch('visible')
+  // banDoNen.watch('opacity')
 
   map.add(banDoNen);
   map.reorder(banDoNen, 0);
