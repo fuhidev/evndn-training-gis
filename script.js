@@ -21,6 +21,7 @@ require([
   "esri/widgets/Expand",
   "esri/widgets/Print",
   "esri/widgets/FeatureForm",
+  "esri/core/reactiveUtils",
 ], function (
   Map,
   MapView,
@@ -43,7 +44,8 @@ require([
   Legend,
   Expand,
   Print,
-  FeatureForm
+  FeatureForm,
+  reactiveUtils
 ) {
   const basemap = new Basemap({
     baseLayers: [
@@ -76,13 +78,22 @@ require([
 
   const graphicPoint = new Graphic({
     // geometry: view.center,
-    geometry: new Point({
+    // geometry: new Point({
+    //   longitude: 108.221472,
+    //   latitude: 16.07031,
+    // }),
+    geometry: {
+      type: "point",
       longitude: 108.221472,
       latitude: 16.07031,
-    }),
-    symbol: new SimpleMarkerSymbol({
+    },
+    // symbol: new SimpleMarkerSymbol({
+    //   color: "yellow",
+    // }),
+    symbol: {
+      type: "simple-marker",
       color: "yellow",
-    }),
+    },
   });
   view.graphics.add(graphicPoint);
 
@@ -190,7 +201,6 @@ require([
     visible: false,
     minScale: 20000,
   });
-
   // view.watch('map.basemap.title')
   // map.watch('basemap.title')
   // basemap.watch('title')
@@ -214,6 +224,12 @@ require([
   banDoNen.watch("visible, opacity", (newVal, oldVal, property, target) => {
     // alert(`thuoc tinh  ${property} thay doi gia tri sang: ${newVal}`);
   });
+  reactiveUtils.when(
+    () => view.popup.visible === true,
+    (visible) => {
+      console.log(`Popup visible: ${visible}`);
+    }
+  );
 
   setTimeout(() => {
     banDoNen.opacity = 0.7;
