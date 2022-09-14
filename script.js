@@ -266,7 +266,7 @@ require([
       handles.forEach((handle) => handle.remove());
       handles = [];
     }
-    view.hitTest(event.screenPoint).then((response) => {
+    function highlightNhungDoiTuong(response) {
       if (response.results.length) {
         for (let i = 0; i < response.results.length; i++) {
           const feature = response.results[i];
@@ -276,7 +276,8 @@ require([
           });
         }
       }
-    });
+    }
+    view.hitTest(event.screenPoint).then(highlightNhungDoiTuong);
   });
 
   var locateBtn = new Locate({ view: view });
