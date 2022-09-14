@@ -368,4 +368,12 @@ require([
       });
     }
   });
+  const coordinateContainer = $("#coordinateContainer");
+  view.ui.add(coordinateContainer[0], "bottom-right");
+  view.on("pointer-move", (event) => {
+    const { x, y } = event;
+    const mapPoint = view.toMap({ x, y });
+    const text = `${mapPoint.longitude},${mapPoint.latitude}`;
+    coordinateContainer.text(text);
+  });
 });
