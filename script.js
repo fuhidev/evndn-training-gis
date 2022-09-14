@@ -400,7 +400,53 @@ require([
     view.on("pointer-move", (event) => {
       const { x, y } = event;
       const mapPoint = view.toMap({ x, y });
-      toVn2000(mapPoint);
+      toVn2000(mapPoint).catch(() => {});
+    });
+
+    view.ui.add(
+      new Expand({
+        content: document.getElementById("searchingCoordinateContainer"),
+      }),
+      "top-right"
+    );
+
+    const inputX = $("#inputX"),
+      inputY = $("#inputY"),
+      selectSR = $("#selectSR"),
+      btnSubmitSR = $("#btnSubmitSR");
+    btnSubmitSR.click(() => {
+      const x = inputX.val(),
+        y = inputY.val(),
+        sr = selectSR.val();
+      if (sr === "wgs84") {
+        const point = new Point({
+          longitude: +x,
+          latitude: +y,
+          spatialReference: view.spatialReference,
+        });
+
+        view.goTo(point);
+      } else if (sr === "vn2000") {
+        const point = new Point({
+          longitude: +x,
+          latitude: +y,
+          spatialReference: duongDayLayer.spatialReference,
+        });
+        geometryService
+          .project(
+            "https://dnpcgisportal.cpc.vn/portal/rest/services/Utilities/Geometry/GeometryServer",
+            {
+              geometries: [point],
+              outSpatialReference: view.spatialReference,
+            }
+          )
+          .then((response) => {
+            if (response.length) {
+              const wgs84Point = response[0];
+              view.goTo(wgs84Point);
+            }
+          });
+      }
     });
   });
 });
