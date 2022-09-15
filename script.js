@@ -18,6 +18,22 @@ require([
     url: "https://biwase.info/server/rest/services/GISPCDANANG/LuoiDien_HaiChau_TT/FeatureServer/3",
     minScale: 0,
   });
+  const iTuNgay = $("#iTuNgay"),
+    iDenNgay = $("#iDenNgay"),
+    btnXem = $("#btnXem");
+  const ngayHomNay = new Date();
+  const thangNay = ngayHomNay.getMonth() + 1;
+  const giaTriThoiGian = `${ngayHomNay.getFullYear()}-${
+    (thangNay < 10 ? "0" : "") + thangNay
+  }-${ngayHomNay.getDate()}`;
+  iTuNgay.val(giaTriThoiGian);
+  iDenNgay.val(giaTriThoiGian);
+  btnXem.click(() => {
+    if (iTuNgay.val() && iDenNgay.val()) {
+    } else {
+      alert("Chưa chọn thời gian");
+    }
+  });
   // map.add(tramBienApLayer);
   async function taiDuLieu() {
     const result = await fetch("./data.json");
