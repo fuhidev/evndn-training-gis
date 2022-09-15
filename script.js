@@ -2,7 +2,9 @@ require([
   "esri/Map",
   "esri/views/MapView",
   "esri/layers/FeatureLayer",
-], function (Map, MapView, FeatureLayer) {
+  "esri/widgets/Locate/LocateViewModel",
+  "esri/geometry/Circle",
+], function (Map, MapView, FeatureLayer, LocateViewModel, Circle) {
   const map = new Map({
     basemap: "dark-gray-vector",
   });
@@ -24,7 +26,42 @@ require([
     const datas = await result.json();
     const iTuNgay = $("#iTuNgay"),
       iDenNgay = $("#iDenNgay"),
-      btnXem = $("#btnXem");
+      btnXem = $("#btnXem"),
+      btnViTriHienTai = $("#btnViTriHienTai");
+    const locateVM = new LocateViewModel({
+      view,
+    });
+    btnViTriHienTai.click(async () => {
+      const result = await locateVM.locate();
+      const center = {
+        type: "point",
+        longitude: result.coords.longitude,
+        latitude: result.coords.latitude,
+        spatialReference: view.spatialReference,
+      };
+      const circle = new Circle({
+        center: center,
+        radius: 2,
+        radiusUnit: "kilometers",
+      });
+      const graphicCircle = {
+        geometry: circle,
+        symbol: {
+          type: "simple-fill",
+          color: "rgba(37 ,99 ,235,0.2)",
+        },
+      };
+
+      view.graphics.add(graphicCircle);
+      const maCMISString = datas.map((m) => `'${m.maTram}'`).join(",");
+
+      const ketQuaTruyVan = await tramBienApLayer.queryFeatures({
+        geometry: circle,
+        where: `MaCMIS in (${maCMISString})`,
+      });
+      console.log(ketQuaTruyVan);
+    });
+    btnViTriHienTai.click();
     const ngayHomNay = new Date();
     const thangNay = ngayHomNay.getMonth() + 1;
     const giaTriThoiGian = `${ngayHomNay.getFullYear()}-${
