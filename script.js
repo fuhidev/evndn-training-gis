@@ -71,74 +71,74 @@ require([
               view.spatialReference
             );
             directionLines.push(geometryLine);
-          }
-          const unionGeom = geometryEngine.union(directionLines);
-          const kcBuffer = +iKCTimDuong.val();
-          const timDuongTinhTien = geometryEngine.offset(
-            unionGeom,
-            kcBuffer,
-            "meters"
-          );
-          const graphicBuffer = {
-            geometry: timDuongTinhTien,
-            symbol: {
-              type: "simple-line",
-              color: "rgb(232, 67, 147)",
-            },
-          };
-          view.graphics.add(graphicBuffer);
-          const kcLonNhatGiuaHaiTru = +iKCHaiTru.val();
-          const diemCuoi = timDuongTinhTien.getPoint(
-            0,
-            timDuongTinhTien.paths[0].length - 1
-          );
-          let tamDuongTron = timDuongTinhTien.getPoint(0, 0);
-          view.graphics.add({
-            geometry: tamDuongTron,
-            symbol: {
-              type: "simple-marker",
-              color: "yellow",
-              size: 5,
-            },
-          });
-          const chieuDaiCuaTimDuongTinhTien = geometryEngine.geodesicLength(
-            timDuongTinhTien,
-            "meters"
-          );
-          const soTru = Math.ceil(
-            chieuDaiCuaTimDuongTinhTien / kcLonNhatGiuaHaiTru
-          );
-          const kcTamGiuaHaiTru = chieuDaiCuaTimDuongTinhTien / soTru;
-          for (let i = 0; i < soTru; i++) {
-            const circle = new Circle({
-              center: tamDuongTron,
-              radius: kcTamGiuaHaiTru,
-              unit: "meters",
-            });
-            const ketQuaGiaoDiem = geometryEngine.intersect(
-              circle,
-              timDuongTinhTien
+
+            const kcBuffer = +iKCTimDuong.val();
+            const timDuongTinhTien = geometryEngine.offset(
+              geometryLine,
+              kcBuffer,
+              "meters"
             );
-            let giaoDiem = ketQuaGiaoDiem.getPoint(
+            const graphicBuffer = {
+              geometry: timDuongTinhTien,
+              symbol: {
+                type: "simple-line",
+                color: "rgb(232, 67, 147)",
+              },
+            };
+            view.graphics.add(graphicBuffer);
+            const kcLonNhatGiuaHaiTru = +iKCHaiTru.val();
+            const diemCuoi = timDuongTinhTien.getPoint(
               0,
-              ketQuaGiaoDiem.paths[0].length - 1
+              timDuongTinhTien.paths[0].length - 1
             );
-            if (i === soTru - 1) {
-              if (
-                geometryEngine.distance(giaoDiem, diemCuoi) < kcTamGiuaHaiTru
-              ) {
-                giaoDiem = diemCuoi;
-              }
-            }
+            let tamDuongTron = timDuongTinhTien.getPoint(0, 0);
             view.graphics.add({
-              geometry: giaoDiem,
+              geometry: tamDuongTron,
               symbol: {
                 type: "simple-marker",
                 color: "yellow",
                 size: 5,
               },
             });
-            tamDuongTron = giaoDiem;
+            const chieuDaiCuaTimDuongTinhTien = geometryEngine.geodesicLength(
+              timDuongTinhTien,
+              "meters"
+            );
+            const soTru = Math.ceil(
+              chieuDaiCuaTimDuongTinhTien / kcLonNhatGiuaHaiTru
+            );
+            const kcTamGiuaHaiTru = chieuDaiCuaTimDuongTinhTien / soTru;
+            for (let i = 0; i < soTru; i++) {
+              const circle = new Circle({
+                center: tamDuongTron,
+                radius: kcTamGiuaHaiTru,
+                unit: "meters",
+              });
+              const ketQuaGiaoDiem = geometryEngine.intersect(
+                circle,
+                timDuongTinhTien
+              );
+              let giaoDiem = ketQuaGiaoDiem.getPoint(
+                0,
+                ketQuaGiaoDiem.paths[0].length - 1
+              );
+              if (i === soTru - 1) {
+                if (
+                  geometryEngine.distance(giaoDiem, diemCuoi) < kcTamGiuaHaiTru
+                ) {
+                  giaoDiem = diemCuoi;
+                }
+              }
+              view.graphics.add({
+                geometry: giaoDiem,
+                symbol: {
+                  type: "simple-marker",
+                  color: "yellow",
+                  size: 5,
+                },
+              });
+              tamDuongTron = giaoDiem;
+            }
           }
         }
       });
