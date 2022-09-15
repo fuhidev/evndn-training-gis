@@ -136,6 +136,7 @@ require([
           li.click(() => {
             view.popup.open({
               features: [tramBienApGraphic],
+              updateLocationEnabled: true,
             });
             view.goTo(
               { target: tramBienApGraphic, zoom: 18 },
