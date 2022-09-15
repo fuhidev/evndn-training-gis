@@ -32,14 +32,28 @@ require([
       if (result.features.length > 0) {
         const tramBienApGraphic = result.features[0];
         const maCMIS = tramBienApGraphic.attributes.MaCMIS;
+        const TenTramBienAp = tramBienApGraphic.attributes.TenTramBienAp;
         const dataMatDien = datas.find((data) => data.maTram === maCMIS);
-        let color = "red";
-        if (dataMatDien.loaiMatDien === "KH") {
-          color = "green";
+        let url = `./${dataMatDien.loaiMatDien}.gif`;
+        let size = 30;
+        if (dataMatDien.soLuongKhachHang <= 100) {
+          size = 20;
+        } else if (dataMatDien.soLuongKhachHang <= 200) {
+          size = 25;
         }
         tramBienApGraphic.symbol = {
-          type: "simple-marker",
-          color: color,
+          type: "picture-marker",
+          url: url,
+          width: size,
+          height: size,
+        };
+        tramBienApGraphic.popupTemplate = {
+          title: TenTramBienAp,
+          content: `
+          <div>Thời điểm mất điện: ${dataMatDien.thoiDiemMatDien}</div>
+          <div>Thời điểm khôi phục: ${dataMatDien.thoiDiemKhoiPhuc}</div>
+          <div>Số lượng khách hàng: ${dataMatDien.soLuongKhachHang}</div>
+          `,
         };
         view.graphics.add(tramBienApGraphic);
       }

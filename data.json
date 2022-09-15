@@ -3,30 +3,35 @@
     "maTram": "AC53AA10",
     "thoiDiemMatDien": "2022-09-15T01:24:22.900Z",
     "thoiDiemKhoiPhuc": "2022-09-15T03:24:22.900Z",
-    "loaiMatDien": "DX"
+    "loaiMatDien": "DX",
+    "soLuongKhachHang": 45
   },
   {
     "maTram": "AC53AA15",
     "thoiDiemMatDien": "2022-09-15T03:24:22.900Z",
     "thoiDiemKhoiPhuc": "2022-09-15T05:24:22.900Z",
-    "loaiMatDien": "KH"
+    "loaiMatDien": "KH",
+    "soLuongKhachHang": 320
   },
   {
     "maTram": "AC53AAB6",
     "thoiDiemMatDien": "2022-09-15T03:24:22.900Z",
     "thoiDiemKhoiPhuc": "2022-09-15T05:24:22.900Z",
-    "loaiMatDien": "KH"
+    "loaiMatDien": "KH",
+    "soLuongKhachHang": 100
   },
   {
     "maTram": "AC53AAAZ",
     "thoiDiemMatDien": "2022-09-15T03:24:22.900Z",
     "thoiDiemKhoiPhuc": "2022-09-15T05:24:22.900Z",
-    "loaiMatDien": "KH"
+    "loaiMatDien": "KH",
+    "soLuongKhachHang": 80
   },
   {
     "maTram": "AC53AABO",
     "thoiDiemMatDien": "2022-09-15T03:24:22.900Z",
     "thoiDiemKhoiPhuc": "2022-09-15T05:24:22.900Z",
-    "loaiMatDien": "KH"
+    "loaiMatDien": "KH",
+    "soLuongKhachHang": 400
   }
 ]
