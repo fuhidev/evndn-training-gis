@@ -88,7 +88,10 @@ require([
           };
           view.graphics.add(graphicBuffer);
           const kcLonNhatGiuaHaiTru = +iKCHaiTru.val();
-
+          const diemCuoi = timDuongTinhTien.getPoint(
+            0,
+            timDuongTinhTien.paths[0].length - 1
+          );
           let tamDuongTron = timDuongTinhTien.getPoint(0, 0);
           view.graphics.add({
             geometry: tamDuongTron,
@@ -116,10 +119,17 @@ require([
               circle,
               timDuongTinhTien
             );
-            const giaoDiem = ketQuaGiaoDiem.getPoint(
+            let giaoDiem = ketQuaGiaoDiem.getPoint(
               0,
               ketQuaGiaoDiem.paths[0].length - 1
             );
+            if (i === soTru - 1) {
+              if (
+                geometryEngine.distance(giaoDiem, diemCuoi) < kcTamGiuaHaiTru
+              ) {
+                giaoDiem = diemCuoi;
+              }
+            }
             view.graphics.add({
               geometry: giaoDiem,
               symbol: {
