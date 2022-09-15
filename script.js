@@ -27,7 +27,8 @@ require([
     const iTuNgay = $("#iTuNgay"),
       iDenNgay = $("#iDenNgay"),
       btnXem = $("#btnXem"),
-      btnViTriHienTai = $("#btnViTriHienTai");
+      btnViTriHienTai = $("#btnViTriHienTai"),
+      ulDanhSachTuyenDay = $("#ulDanhSachTuyenDay");
     const locateVM = new LocateViewModel({
       view,
     });
@@ -61,7 +62,6 @@ require([
       });
       console.log(ketQuaTruyVan);
     });
-    btnViTriHienTai.click();
     const ngayHomNay = new Date();
     const thangNay = ngayHomNay.getMonth() + 1;
     const giaTriThoiGian = `${ngayHomNay.getFullYear()}-${
@@ -123,6 +123,29 @@ require([
           `,
           };
           view.graphics.add(tramBienApGraphic);
+          const li = $("<li/>");
+          li.addClass(
+            "cursor:pointer py-1 px-2 hover:bg-blue-600 hover:text-white hover:shadow rounded"
+          );
+          if (dataMatDien.loaiMatDien === "DX") {
+            li.addClass("text-red-600");
+          } else {
+            li.addClass("text-pink-400");
+          }
+          li.text(`${TenTramBienAp}`);
+          li.click(() => {
+            view.popup.open({
+              features: [tramBienApGraphic],
+            });
+            view.goTo(
+              { target: tramBienApGraphic, zoom: 18 },
+              {
+                duration: 1000,
+              }
+            );
+          });
+
+          ulDanhSachTuyenDay.append(li);
         }
       }
     }
